@@ -48,7 +48,22 @@ export default function TeamsPage() {
     }
   };
 
-  const handleDeleteTeam = async (_teamId: string) => {};
+  const handleDeleteTeam = async (teamId: string) => {
+    // Optimistically remove the team from cache
+    let teams = data?.teams;
+    if (!teams) return;
+
+    teams = teams.filter((team) => team.id !== teamId);
+
+    client.cache.writeQuery({
+      query: TEAM_QUERY,
+      data: { teams },
+    });
+
+    // Optionally, you may want to call a delete mutation here if you have one
+    // Example:
+    // await deleteTeam({ variables: { id: teamId } });
+  };
 
   const handleEditTeamChange = (teamId: string, name: string) => {
     let teams = data?.teams;
