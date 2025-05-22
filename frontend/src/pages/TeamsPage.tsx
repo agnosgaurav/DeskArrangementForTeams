@@ -79,10 +79,10 @@ export default function TeamsPage() {
     });
   };
 
-  const handleSaveEdit = async (teamId: string) => {
+  const handleSaveEdit = async (teamId: string, name: string) => {
     const team = data?.teams.find((team) => team.id === teamId);
     if (team) {
-      await putTeam({ variables: { id: teamId, name: team.name } });
+      await putTeam({ variables: { id: teamId, name } });
     }
   };
 
@@ -105,7 +105,7 @@ export default function TeamsPage() {
                     value={team.name}
                     data-testid='name'
                     onChange={(e) => handleEditTeamChange(team.id, e.target.value)}
-                    onBlur={() => handleSaveEdit(team.id)}
+                    onBlur={(e) => handleSaveEdit(team.id, e.target.value)}
                   />
                 </TableCell>
                 <TableCell>
